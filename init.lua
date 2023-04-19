@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
 
 vim.cmd [[packadd packer.nvim]]
-require("packer").startup(function(use) 
+require("packer").startup(function(use)
 	use { "wbthomason/packer.nvim" }
 	use { "folke/tokyonight.nvim" }
 	use { "numToStr/Comment.nvim" }
@@ -10,13 +10,30 @@ require("packer").startup(function(use)
 		requires = { "nvim-tree/nvim-web-devicons", opt = true }
 	}
 	use { "nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" } }
-	use { 
-		"nvim-telescope/telescope.nvim", tag = "0.1.1",
+	use {
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.1",
 		requires = { { "nvim-lua/plenary.nvim" } }
 	}
 	use { "f-person/git-blame.nvim" }
 	use { "sainnhe/edge" }
 	use { "fatih/vim-go", { run = ":GoUpdateBinaries" } }
+	use {
+		"VonHeikemen/lsp-zero.nvim",
+		branch = 'v2.x',
+		requires = {
+			{ 'neovim/nvim-lspconfig' },
+			{
+				'williamboman/mason.nvim',
+				run = ":MasonUpdate"
+			},
+			{ 'williamboman/mason-lspconfig.nvim' },
+
+			{ 'hrsh7th/nvim-cmp' },
+			{ 'hrsh7th/cmp-nvim-lsp' },
+			{ 'L3MON4D3/LuaSnip' },
+		}
+	}
 end)
 
 vim.opt.background = "dark"
@@ -39,6 +56,25 @@ require("nvim-treesitter.configs").setup({
 })
 
 vim.g.go_fmt_command = "goimports"
+local lsp = require("lsp-zero").preset({})
+lsp.on_attach(function(_, bufnr)
+	lsp.default_keymaps({ buffer = bufnr })
+	lsp.buffer_autoformat()
+end)
+require("lspconfig").lua_ls.setup({
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" }
+			}
+		}
+	}
+})
+lsp.ensure_installed({
+	"lua_ls",
+})
+lsp.setup()
+
 
 vim.opt.number = false
 vim.opt.relativenumber = true
@@ -71,14 +107,15 @@ vim.keymap.set("n", "<leader>h", ":wincmd h<CR>", { noremap = true, desc = "Move
 vim.keymap.set("n", "<leader>l", ":wincmd l<CR>", { noremap = true, desc = "Move cursor to left buffer" })
 vim.keymap.set("n", "<leader>j", ":wincmd j<CR>", { noremap = true, desc = "Move cursor to bottom buffer" })
 vim.keymap.set("n", "<leader>k", ":wincmd k<CR>", { noremap = true, desc = "Move cursor to top buffer" })
+vim.keymap.set("n", "<leader>e", ":Vex!<CR>", { desc = "Split window and explore" })
 
-telescope = require("telescope.builtin")
+local telescope = require("telescope.builtin")
 vim.keymap.set("n", "<leader>?", telescope.oldfiles, { desc = "Recently opened files" })
-vim.keymap.set("n", "/", function ()
+vim.keymap.set("n", "/", function()
 	telescope.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 		previewer = false,
 	}))
-end, { desc = "Current buffer fuzzy" } )
+end, { desc = "Current buffer fuzzy" })
 vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Search by filename" })
 vim.keymap.set("n", "<leader>fs", telescope.live_grep, { desc = "Search root directory" })
 vim.keymap.set("n", "<leader>fcw", telescope.grep_string, { desc = "Search by cursor word" })
