@@ -44,7 +44,10 @@ vim.cmd("colorscheme edge")
 
 require("lualine").setup({
 	options = {
-		theme = "edge"
+		icons_enabled = false,
+		theme = "onedark",
+		component_separators = "|",
+		section_separators = "",
 	}
 })
 
@@ -61,7 +64,8 @@ lsp.on_attach(function(_, bufnr)
 	lsp.default_keymaps({ buffer = bufnr })
 	lsp.buffer_autoformat()
 end)
-require("lspconfig").lua_ls.setup({
+local lsp_conf = require("lspconfig")
+lsp_conf.lua_ls.setup({
 	settings = {
 		Lua = {
 			diagnostics = {
