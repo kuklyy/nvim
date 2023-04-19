@@ -32,7 +32,7 @@ require("lualine").setup({
 })
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "lua", "vim", "go", "javascript", "typescript", "python", "css", "dockerfile", "html", "make", "sql", "terraform", "toml" },
+	ensure_installed = { "lua", "vim", "go", "javascript", "typescript", "python", "css", "dockerfile", "html", "make", "sql", "hcl", "toml" },
 	highlight = {
 		enable = true,
 	}
