@@ -52,7 +52,9 @@ require("lualine").setup({
 })
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "lua", "vim", "go", "javascript", "typescript", "python", "css", "dockerfile", "html", "make", "sql", "hcl", "toml" },
+	ensure_installed = {
+		"lua", "vim", "go", "javascript", "typescript", "python", "css", "dockerfile", "html", "make", "hcl", "toml"
+	},
 	highlight = {
 		enable = true,
 	}
@@ -105,6 +107,12 @@ require("Comment").setup({
 		line = "gc",
 		block = "gb",
 	}
+})
+local cmp = require("cmp")
+cmp.setup({
+	mapping = cmp.mapping.preset.insert({
+		["<CR>"] = cmp.mapping.confirm({ select = true })
+	})
 })
 vim.keymap.set("n", "<leader>v", ":vsplit<CR><C-w>l", { noremap = true, desc = "Split window vertically" })
 vim.keymap.set("n", "<leader>h", ":wincmd h<CR>", { noremap = true, desc = "Move cursor to right buffer" })
