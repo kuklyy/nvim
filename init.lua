@@ -3,7 +3,6 @@ vim.g.mapleader = " "
 vim.cmd [[packadd packer.nvim]]
 require("packer").startup(function(use)
 	use { "wbthomason/packer.nvim" }
-	use { "folke/tokyonight.nvim" }
 	use { "numToStr/Comment.nvim" }
 	use {
 		"nvim-lualine/lualine.nvim",
@@ -99,6 +98,7 @@ vim.o.incsearch = true
 vim.o.timeout = true
 vim.o.timeoutlen = 1000
 vim.g.gitblame_enabled = 0
+vim.o.wrap = false
 
 vim.keymap.set("i", "jj", "<ESC>")
 vim.keymap.set("n", "<ESC>", ":noh<CR>")
